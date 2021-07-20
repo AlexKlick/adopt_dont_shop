@@ -25,6 +25,7 @@ RSpec.describe 'the pet_apps show page' do
     expect(page).to have_content(@app.zip)
     expect(page).to have_content("In Progress")
   end
+  
   # Story 4
   # When I visit an application's show page
   # And that application has not been submitted,

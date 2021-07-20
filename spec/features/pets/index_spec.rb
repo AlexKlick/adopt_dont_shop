@@ -82,7 +82,7 @@ RSpec.describe 'the pets index' do
     expect(page).to_not have_content(pet_3.name)
   end
 
-  #   Story 2
+    #   Story 2
   #   When I visit the pet index page
   #   Then I see a link to "Start an Application"
   #   When I click this link
@@ -100,7 +100,7 @@ RSpec.describe 'the pets index' do
 
   it 'has a link to create a new application. upon completing returns applicant show page for pet_app' do
     find('new application').click
-    expect(current_path).to eq("/pet_apps/new")
+    expect(current_path).to eq("/apps/new")
     fill_in 'Name', with: 'Alex'
     fill_in 'City', with: 'Houston'
     fill_in 'Street', with: '123 fake' 

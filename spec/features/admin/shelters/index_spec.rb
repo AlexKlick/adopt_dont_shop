@@ -47,4 +47,25 @@ RSpec.describe 'the Admin Shelters Index' do
     end
 
   end
+
+  # Story 19
+  # Shelters with Pending Applications Listed Alphabetically
+  # When I visit the admin shelter index ('/admin/shelters')
+  # And I look in the section for shelters with pending applications
+  # Then I see all those shelters are listed alphabetically
+
+  it 'section for pending apps shows shelters listed alphabetically' do
+    
+  end
+
+  # Story 20
+  # Admin Shelters Show Page Links
+  # When I visit the admin shelter index ('/admin/shelters')
+  # Then I see that every shelter name is a link
+  # When I click one of these links
+  # Then I am taken to that shelter's admin show page
+
+  it 'every shelter name is a link, takes to admin shelter show page' do
+    
+  end
 end

@@ -41,8 +41,9 @@
           <% if @pet_search != nil && @pet_search != [] %>
             <ul class="list-group" id="search_results">
               <% @pet_search.each do |result| %>
+                <!-- remove pets already applied for -->
                 <% if @app.pets.include?(result)%>
-                
+                  
                 <% else %>
                   <li class="list-group-item"><%=button_to "Adopt #{result.name}", pet_apps_path(pet_id: result.id, app_id: @app.id), id: "#{result.id}" %></li>
                 <% end %>
