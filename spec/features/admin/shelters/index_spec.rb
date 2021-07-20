@@ -10,7 +10,7 @@ RSpec.describe 'the Admin Shelters Index' do
   end
 
   # Story 10
-  #SQL Only Story
+  # SQL Only Story
   # When I visit the admin shelter index ('/admin/shelters')
   # Then I see all Shelters in the system listed in reverse alphabetical order by name
 
@@ -35,7 +35,6 @@ RSpec.describe 'the Admin Shelters Index' do
     PetApp.create(pet_id: @pet3.id, app_id: app.id)
     PetApp.create(pet_id: @pet2.id, app_id: app.id)
     visit '/admin/shelters'
-    save_and_open_page
     within('div#pending') do
       expect(page).to have_content(@shelter6.name)
       expect(page).to have_content(@shelter7.name)

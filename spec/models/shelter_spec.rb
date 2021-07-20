@@ -47,7 +47,8 @@ RSpec.describe Shelter, type: :model do
         app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
         pet_app1 = app.pet_apps.create!(pet_id: @pet_3.id)
         pet_app2 = app.pet_apps.create!(pet_id: @pet_1.id)
-        expect(Shelter.pending).to eq([@shelter_3, @shelter_1])
+        expect(Shelter.pending).to include(@shelter_3)
+        expect(Shelter.pending).to include(@shelter_1)
         expect(Shelter.pending).to_not include(@shelter_2)
       end
     end
