@@ -22,6 +22,8 @@ RSpec.describe 'the pet_apps new page' do
     fill_in 'zip', with: '80204'
     fill_in 'State', with: 'MI'
     click_button 'commit'
+    @app = App.last
     #fill in missing fields, submit returns 
+    expect(current_path).to eq("/apps/#{@app.id}")
   end
 end

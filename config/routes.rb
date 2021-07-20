@@ -39,4 +39,8 @@ Rails.application.routes.draw do
 
   resources :apps, only: [:show, :update, :new, :create]
   resources :pet_apps, only: [:create]
+
+  namespace :admin do
+    resources :shelters, only: [:index, :show]
+  end
 end
