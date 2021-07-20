@@ -16,11 +16,11 @@ ActiveRecord::Schema.define(version: 2021_07_19_190603) do
   enable_extension "plpgsql"
 
   create_table "apps", force: :cascade do |t|
-    t.string "name"
-    t.string "street"
-    t.string "city"
-    t.string "state"
-    t.integer "zip"
+    t.string "name", null: false
+    t.string "street", null: false
+    t.string "city", null: false
+    t.string "state", null: false
+    t.integer "zip", null: false
     t.text "description"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2021_07_19_190603) do
   create_table "pet_apps", force: :cascade do |t|
     t.bigint "app_id"
     t.bigint "pet_id"
+    t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_id"], name: "index_pet_apps_on_app_id"

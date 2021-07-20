@@ -99,7 +99,8 @@ RSpec.describe 'the pets index' do
   #   And I see an indicator that this application is "In Progress"
 
   it 'has a link to create a new application. upon completing returns applicant show page for pet_app' do
-    find('new application').click
+    visit "/pets"
+    find_link('new application').click
     expect(current_path).to eq("/apps/new")
     fill_in 'Name', with: 'Alex'
     fill_in 'City', with: 'Houston'

@@ -8,7 +8,7 @@ RSpec.describe 'the admin shelter show' do
   # As a visitor
   # When I visit an admin shelter show page
   # Then I see that shelter's name and full address
-  it 'lists the shelters name and address' do 
+  xit 'lists the shelters name and address' do 
 
   end
 
