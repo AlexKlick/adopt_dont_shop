@@ -28,8 +28,8 @@ RSpec.describe 'the admin apps show page' do
       expect(page).to have_css("td##{@pet_app1.id}-reject")
       expect(page).to have_css("td##{@pet_app2.id}-approve")
       expect(page).to have_css("td##{@pet_app2.id}-reject")
-      within("##{@pet_app2.id}-reject") do
-        click_on('Reject')
+      within("##{@pet_app2.id}-approve") do
+        click_on('Approve')
       end
     end
     within(".table") do
@@ -56,11 +56,36 @@ RSpec.describe 'the admin apps show page' do
   # And next to the pet that I rejected, I do not see a button to approve or reject this pet
   # And instead I see an indicator next to the pet that they have been rejected
 
-  xit 'has a reject application button for each pet which upon clicking is removed and the pet shows as rejected' do
-    
+  it 'has a reject application button for each pet which upon clicking is removed and the pet shows as rejected' do
+    within(".table") do
+      #has only 4 inputs, 2 reject 2 accept
+      expect(page).to have_css("input", :count => 4)
+      expect(page).to have_css("td##{@pet_app1.id}-approve")
+      expect(page).to have_css("td##{@pet_app1.id}-reject")
+      expect(page).to have_css("td##{@pet_app2.id}-approve")
+      expect(page).to have_css("td##{@pet_app2.id}-reject")
+      within("##{@pet_app2.id}-reject") do
+        click_on('Reject')
+      end
+    end
+    within(".table") do
+      #expect only 2 inputs left, replaced by rejected status in table
+      expect(page).to have_css("input", :count => 2)
+      expect(page).to have_css("td##{@pet_app1.id}-approve")
+      expect(page).to have_css("td##{@pet_app1.id}-reject")
+      #these 2 buttons gone
+      expect(page).to_not have_css("td##{@pet_app2.id}-approve")
+      expect(page).to_not have_css("td##{@pet_app2.id}-reject")
+      #expect replaced by updated status 
+      within("td##{@pet_app2.id}-status") do
+        #interesting note: status wasn't updated on the object in rspec.. 
+        #must be cached? Needed reload by finding it in PetApp to pass
+        expect(page).to have_content("Status: #{PetApp.find(@pet_app2.id).status}")
+      end
+    end
   end
 
-  # Story 13
+  # Story 14
   # When there are two applications in the system for the same pet
   # When I visit the admin application show page for one of the applications
   # And I approve or reject the pet for that application
@@ -72,7 +97,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 14
+  # Story 15
   # When I visit an admin application show page
   # And I approve all pets for an application
   # Then I am taken back to the admin application show page
@@ -82,7 +107,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 15
+  # Story 16
   # When I visit an admin application show page
   # And I reject one or more pets for the application
   # And I approve all other pets on the application
@@ -94,7 +119,7 @@ RSpec.describe 'the admin apps show page' do
 
   end
 
-  # Story 16
+  # Story 17
   # When I visit an admin application show page
   # And I approve all pets on the application
   # And when I visit the show pages for those pets
@@ -103,7 +128,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 17
+  # Story 18
   # When a pet has an "Approved" application on them
   # And when the pet has a "Pending" application on them
   # And I visit the admin application show page for the pending application
@@ -115,7 +140,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 21
+  # Story 22
   # Average Pet Age
   # When I visit an admin shelter show page
   # Then I see a section for statistics
@@ -124,7 +149,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 22
+  # Story 23
   # Count of Adoptable Pets
   # When I visit an admin shelter show page
   # Then I see a section for statistics
@@ -133,7 +158,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 23
+  # Story 24
   # Count of Pets that have been Adopted
   # When I visit an admin shelter show page
   # Then I see a section for statistics
@@ -143,7 +168,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 24
+  # Story 25
   # Action Required
   # When I visit an admin shelter show page
   # Then I see a section titled "Action Required"
@@ -154,7 +179,7 @@ RSpec.describe 'the admin apps show page' do
     
   end
 
-  # Story 25
+  # Story 26
   # Action Required Links to Application Show Page
   # When I visit an admin shelter show page
   # And I look in the "Action Required" section
