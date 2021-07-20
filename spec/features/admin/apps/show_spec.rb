@@ -8,8 +8,11 @@ RSpec.describe 'the admin apps show page' do
     @pet2 = Pet.create(name:'Tesla',adoptable:true,breed:'hunter cat',age:4, shelter_id: @shelter.id, pic:'tesla.jpg')
     @pet3 = Pet.create(name:'Cosmos',adoptable:true,breed:'playful cat',age:4, shelter_id: @shelter.id, pic:'20210429_144443.jpg')
     @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
+    @app2 = App.create(name: 'Doo', street: "456", city:"more-fake", state: "denial", zip: 80204)
     @pet_app1 = @app.pet_apps.create!(pet_id: @pet2.id)
     @pet_app2 = @app.pet_apps.create!(pet_id: @pet1.id)
+    @pet_app3 = @app2.pet_apps.create!(pet_id: @pet2.id)
+    @pet_app4 = @app2.pet_apps.create!(pet_id: @pet1.id)
     visit "/admin/apps/#{@app.id}"
 
   end
@@ -93,8 +96,21 @@ RSpec.describe 'the admin apps show page' do
   # Then I do not see that the pet has been accepted or rejected for that application
   # And instead I see buttons to approve or reject the pet for this specific application
 
-  xit 'approving or rejecting an app for a pet does not change their other apps status' do
-    
+  it 'approving or rejecting an app for a pet does not change their other apps status' do
+    within(".table") do
+      within("##{@pet_app2.id}-reject") do
+        click_on('Reject')
+      end
+    end
+    visit "/admin/apps/#{@app2.id}"
+    within(".table") do
+      #still has 4 inputs 2 each for app 2
+      expect(page).to have_css("input", :count => 4)
+      expect(page).to have_css("td##{@pet_app3.id}-approve")
+      expect(page).to have_css("td##{@pet_app3.id}-reject")
+      expect(page).to have_css("td##{@pet_app4.id}-approve")
+      expect(page).to have_css("td##{@pet_app4.id}-reject")
+    end
   end
 
   # Story 15
