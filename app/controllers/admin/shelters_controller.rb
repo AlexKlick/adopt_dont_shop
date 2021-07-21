@@ -5,6 +5,7 @@ class Admin::SheltersController < ApplicationController
   end
   def show
     @shelter = Shelter.sql_query(shelter_params[:id])
+    @pet_average_age = @shelter.pet_average_age
   end
 
   private

@@ -47,4 +47,10 @@ class Shelter < ApplicationRecord
       LIMIT 1
       ").first
   end
+
+  def pet_average_age
+    pets
+    .average(:age)
+    .to_i
+  end
 end

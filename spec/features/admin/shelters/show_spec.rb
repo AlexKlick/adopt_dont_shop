@@ -8,7 +8,7 @@ RSpec.describe 'the admin shelter show' do
     @shelter6 = Shelter.create!(name:'San Antonio Humane Society', city:'Marquette', foster_program:true, rank: 1)
     @shelter7 = Shelter.create!(name:'Marquette Humane Society', city:'San Antonio', foster_program:true, rank: 2)
 
-    @pet1 = Pet.create(name:'Muffin',adoptable:true,breed:'fluffy cat',age:5, shelter_id: @shelter6.id, pic:'20210429_144443.jpg')
+    @pet1 = Pet.create(name:'Muffin',adoptable:true,breed:'fluffy cat',age:5, shelter_id: @shelter7.id, pic:'20210429_144443.jpg')
     @pet2 = Pet.create(name:'Tesla',adoptable:true,breed:'hunter cat',age:4, shelter_id: @shelter7.id, pic:'tesla.jpg')
     @pet3 = Pet.create(name:'Cosmos',adoptable:true,breed:'playful cat',age:4, shelter_id: @shelter7.id, pic:'20210429_144443.jpg')
 
@@ -19,6 +19,8 @@ RSpec.describe 'the admin shelter show' do
     @pet_app3 = PetApp.create(pet_id: @pet1.id, app_id: @app.id)
     @pet_app4 = PetApp.create(pet_id: @pet3.id, app_id: @app.id)
     @pet_app5 = PetApp.create(pet_id: @pet2.id, app_id: @app.id)
+
+    visit "/admin/shelters/#{@shelter7.id}"
   end
 
   # Story 19
@@ -28,9 +30,8 @@ RSpec.describe 'the admin shelter show' do
   # When I visit an admin shelter show page
   # Then I see that shelter's name and full address
   it 'lists the shelters name and address' do 
-    visit "/admin/shelters/#{@shelter1.id}"
-    expect(page).to have_content(@shelter1.name)
-    expect(page).to have_content(@shelter1.city)
+    expect(page).to have_content(@shelter7.name)
+    expect(page).to have_content(@shelter7.city)
   end
 
     # Story 22
@@ -38,9 +39,9 @@ RSpec.describe 'the admin shelter show' do
   # When I visit an admin shelter show page
   # Then I see a section for statistics
   # And in that section I see the average age of all adoptable pets for that shelter
-  xit 'has a stats section, where we find the average age of all adoptable pets for the shelter' do
+  it 'has a stats section, where we find the average age of all adoptable pets for the shelter' do
     within("#statistics") do
-      
+      expect(find('#average_age').text).to eq("4")
     end
   end
 
