@@ -1,7 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe 'the admin apps show page' do
+  before(:each) do
+    @shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+    @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
+    @pet1 = Pet.create(name:'Muffin',adoptable:true,breed:'fluffy cat',age:5, shelter_id: @shelter.id, pic:'20210429_144443.jpg')
+    @pet2 = Pet.create(name:'Tesla',adoptable:true,breed:'hunter cat',age:4, shelter_id: @shelter.id, pic:'tesla.jpg')
+    @pet3 = Pet.create(name:'Cosmos',adoptable:true,breed:'playful cat',age:4, shelter_id: @shelter.id, pic:'20210429_144443.jpg')
+    @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
+    @pet_app1 = @app.pet_apps.create!(pet_id: @pet2.id)
+    @pet_app2 = @app.pet_apps.create!(pet_id: @pet1.id)
+    visit "/admin/apps/#{@app.id}"
 
+  end
   # Story 12
   # When I visit an admin application show page ('/admin/applications/:id')
   # For every pet that the application is for, I see a button to approve the application for that specific pet
@@ -9,8 +20,33 @@ RSpec.describe 'the admin apps show page' do
   # Then I'm taken back to the admin application show page
   # And next to the pet that I approved, I do not see a button to approve this pet
   # And instead I see an indicator next to the pet that they have been approved
-  xit 'has a button to approve an application for a specific pet. Upon clicking, the pet shows approved and the button is gone' do
-
+  it 'has a button to approve an application for a specific pet. Upon clicking, the pet shows approved and the button is gone' do
+    within(".table") do
+      #has only 4 inputs, 2 reject 2 accept
+      expect(page).to have_css("input", :count => 4)
+      expect(page).to have_css("td##{@pet_app1.id}-approve")
+      expect(page).to have_css("td##{@pet_app1.id}-reject")
+      expect(page).to have_css("td##{@pet_app2.id}-approve")
+      expect(page).to have_css("td##{@pet_app2.id}-reject")
+      within("##{@pet_app2.id}-reject") do
+        click_on('Reject')
+      end
+    end
+    within(".table") do
+      #expect only 2 inputs left, replaced by rejected status in table
+      expect(page).to have_css("input", :count => 2)
+      expect(page).to have_css("td##{@pet_app1.id}-approve")
+      expect(page).to have_css("td##{@pet_app1.id}-reject")
+      #these 2 buttons gone
+      expect(page).to_not have_css("td##{@pet_app2.id}-approve")
+      expect(page).to_not have_css("td##{@pet_app2.id}-reject")
+      #expect replaced by updated status 
+      within("td##{@pet_app2.id}-status") do
+        #interesting note: status wasn't updated on the object in rspec.. 
+        #must be cached? Needed reload by finding it in PetApp to pass
+        expect(page).to have_content("Status: #{PetApp.find(@pet_app2.id).status}")
+      end
+    end
   end
   # Story 13
   # When I visit an admin application show page ('/admin/applications/:id')

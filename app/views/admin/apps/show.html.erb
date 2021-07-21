@@ -1,0 +1,61 @@
+<div class="col-lg-4 rounded" style="border: 2px red; padding: 15px">
+  <div class="card " style="background-color: rgb(191, 202, 209);min-width: 480px">
+    <div class="card-header" style="background-color: rgb(59, 87, 105)">
+      <h4 style="padding-top: 8px; color: rgb(191, 202, 209);" class="card-title"><%=@app.name%></h4>
+      <h6 id="status" style="font-style:italic ;<%= @app.status == 'approved' ? 'color:green' : 'color: rgb(230,230,0)' %>">Status: <%= @app.status%></h6>
+      <hr
+        class="float-left"
+        style="
+          color: rgb(105, 0, 0);
+          border: 2px solid rgb(112, 0, 0);
+          width: 50%;
+        "
+      />
+      <br>
+      <Address style="color: rgb(191, 202, 209);">  <strong></strong><br>
+        <%=@app.street %><br>
+        <%=@app.city %>, <%=@app.state %> <%=@app.zip %><br>
+
+      </Address>
+    </div>
+    <div class="card-body" style="background-color: rgb(217, 221, 222)">
+      <% if @app.pets != []%>
+        <div id="pets_on_app">
+          <h5>Pets on this Application:</h5>
+          <table class="table table-bordered table-hover align-middle text-center">
+            <tbody>
+              <% @app.pet_apps.each do |pet_app| %>
+                <% if pet_app.status == "pending" %>
+                <tr>
+                  <td><%=pet_app.pet.name %></td>
+                  <td id ="<%=pet_app.id%>-approve">
+                    <%= bootstrap_form_tag url: "/admin/pet_apps/#{pet_app.id}", method: :patch do |form| %>
+                      <%= form.hidden_field :status, value: 'approved' %>
+                      <%= form.submit 'Approve', :class => "btn btn-success fs-5", :style => "width: 100px;" %>
+                    <% end %>
+                  </td>
+                  <td id ="<%=pet_app.id%>-reject">                    
+                    <%= bootstrap_form_tag url: "/admin/pet_apps/#{pet_app.id}", method: :patch do |form| %>
+                      <%= form.hidden_field :status, value: 'rejected' %>
+                      <%= form.submit 'Reject', :class => "btn btn-danger fs-5", :style => "width: 100px;"  %>
+                    <% end %>
+                  </td>
+                </tr>
+                <% else %>
+                  <tr>
+                    <td><%=pet_app.pet.name %></td>
+                    <td id ="<%=pet_app.id%>-status">Status: <%=pet_app.status %></td>
+                  </tr>
+                <% end %>
+              <%end%>
+            </tbody>
+          </table>
+          <p class="card-text float:left" style="color: rgb(92, 95, 88); min-width: 100px">
+            Description: <%= @app.description == nil ? "Please fill out the description below" : @app.description%> <br>
+          </p>
+        </div>
+      <%end%>
+    </div>
+    </div>
+  </div>
+</div>
