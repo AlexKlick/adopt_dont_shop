@@ -18,6 +18,11 @@ RSpec.describe Pet, type: :model do
     @pet_1 = @shelter_1.pets.create(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
     @pet_2 = @shelter_1.pets.create(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
     @pet_3 = @shelter_1.pets.create(name: 'Ann', breed: 'ragdoll', age: 3, adoptable: false)
+    @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
+    @app2 = App.create(name: 'Doo', street: "456", city:"more-fake", state: "denial", zip: 80204)
+    @pet_app1 = @app.pet_apps.create!(pet_id: @pet_2.id)
+    @pet_app2 = @app.pet_apps.create!(pet_id: @pet_1.id)
+    @pet_app3 = @app2.pet_apps.create!(pet_id: @pet_2.id)
   end
 
   describe 'class methods' do
@@ -30,6 +35,15 @@ RSpec.describe Pet, type: :model do
     describe '#adoptable' do
       it 'returns adoptable pets' do
         expect(Pet.adoptable).to eq([@pet_1, @pet_2])
+      end
+    end
+
+    describe '#update_adoptability' do
+      it 'updates the attribute adoptable for all pets on app, given app_id and boolean value for changing adoptability' do
+        expect(Pet.pluck(:adoptable)).to eq([true, true, false])
+        Pet.update_adoptability(@app.id, false)
+        binding.pry
+        expect(Pet.pluck(:adoptable)).to eq([false, false, false])
       end
     end
   end

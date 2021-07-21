@@ -12,4 +12,10 @@ class Pet < ApplicationRecord
   def self.adoptable
     where(adoptable: true)
   end
+
+  def self.update_adoptability(id, update_value)
+    joins(pet_apps: :app)
+    .where('apps.id = ?', id)
+    .update_all(adoptable: update_value)
+  end
 end

@@ -13,6 +13,7 @@ RSpec.describe 'the admin apps show page' do
     @pet_app2 = @app.pet_apps.create!(pet_id: @pet1.id)
     @pet_app3 = @app2.pet_apps.create!(pet_id: @pet2.id)
     @pet_app4 = @app2.pet_apps.create!(pet_id: @pet1.id)
+    @pet_app5 = @app2.pet_apps.create!(pet_id: @pet3.id)
     visit "/admin/apps/#{@app.id}"
 
   end
@@ -105,11 +106,13 @@ RSpec.describe 'the admin apps show page' do
     visit "/admin/apps/#{@app2.id}"
     within(".table") do
       #still has 4 inputs 2 each for app 2
-      expect(page).to have_css("input", :count => 4)
+      expect(page).to have_css("input", :count => 6)
       expect(page).to have_css("td##{@pet_app3.id}-approve")
       expect(page).to have_css("td##{@pet_app3.id}-reject")
       expect(page).to have_css("td##{@pet_app4.id}-approve")
       expect(page).to have_css("td##{@pet_app4.id}-reject")
+      expect(page).to have_css("td##{@pet_app5.id}-approve")
+      expect(page).to have_css("td##{@pet_app5.id}-reject")
     end
   end
 
@@ -140,8 +143,18 @@ RSpec.describe 'the admin apps show page' do
   # Then I am taken back to the admin application show page
   # And I see the application's status has changed to "Rejected"
 
-  xit 'if one pet is rejected, and then other pets approved, it shows rejjected for entrie app' do
-    
+  xit 'if one pet is rejected, and then other pets approved, it shows rejected for entire app' do
+    within(".table") do
+      within("##{@pet_app2.id}-reject") do
+        click_on('Reject')
+      end
+      within("##{@pet_app1.id}-approve") do
+        click_on('Approve')
+      end
+    end
+    within("#app-status") do
+      expect(page).to have_content("Status: Rejected")
+    end
 
   end
 
@@ -150,8 +163,19 @@ RSpec.describe 'the admin apps show page' do
   # And I approve all pets on the application
   # And when I visit the show pages for those pets
   # Then I see that those pets are no longer "adoptable"
-  xit 'once a pet is on an approved application, the pets show page shows not adoptable' do
-    
+  it 'once a pet is on an approved application, the pets show page shows not adoptable' do
+    within(".table") do
+      within("##{@pet_app2.id}-approve") do
+        click_on('Approve')
+      end
+      within("##{@pet_app1.id}-approve") do
+        click_on('Approve')
+      end
+    end
+    visit "/pets/#{@pet1.id}"
+    expect(page).to have_content("Adoptable: not anymore")
+    visit "/pets/#{@pet2.id}"
+    expect(page).to have_content("Adoptable: not anymore")
   end
 
   # Story 18
@@ -163,56 +187,26 @@ RSpec.describe 'the admin apps show page' do
   # And I do see a button to reject them
 
   xit 'pet has both approved and pending app, on pending app show - pet has no approval button, but message adopted and reject button' do
-    
-  end
-
-  # Story 22
-  # Average Pet Age
-  # When I visit an admin shelter show page
-  # Then I see a section for statistics
-  # And in that section I see the average age of all adoptable pets for that shelter
-  xit 'has a stats section, where we find the average age of all adoptable pets for the shelter' do
-    
-  end
-
-  # Story 23
-  # Count of Adoptable Pets
-  # When I visit an admin shelter show page
-  # Then I see a section for statistics
-  # And in that section I see the number of pets at that shelter that are adoptable
-  xit 'stats section has the number of adoptable pets for the shelter' do
-    
-  end
-
-  # Story 24
-  # Count of Pets that have been Adopted
-  # When I visit an admin shelter show page
-  # Then I see a section for statistics
-  # And in that section I see the number of pets that have been adopted from that shelter
-  # Note: A Pet has been adopted from a shelter if they are part of an approved application
-  xit 'has the number of pets that have been adopted from this shelter' do
-    
-  end
-
-  # Story 25
-  # Action Required
-  # When I visit an admin shelter show page
-  # Then I see a section titled "Action Required"
-  # In that section, I see a list of all pets for 
-  # this shelter that have a pending application 
-  # and have not yet been marked "approved" or "rejected"
-  xit 'has a list of pets from shelter with pending apps, which require action' do
-    
-  end
-
-  # Story 26
-  # Action Required Links to Application Show Page
-  # When I visit an admin shelter show page
-  # And I look in the "Action Required" section
-  # Then next to each pet's name I see a link to the admin application 
-  # show page where I can accept or reject the pet.
-  xit 'each pets name is a link to the show page, where approve or reject' do
-    
+    within(".table") do
+      within("##{@pet_app2.id}-approve") do
+        click_on('Approve')
+      end
+      within("##{@pet_app1.id}-approve") do
+        click_on('Approve')
+      end
+    end
+    visit "/admin/apps/#{@app2.id}"
+    within(".table") do
+      within("##{@pet_app2.id}-approve") do
+        expect(page).to have_content("Pet already approved for another adoption!?!?")
+      end
+      within("##{@pet_app1.id}-approve") do
+        expect(page).to have_content("Pet already approved for another adoption!?!?")
+      end
+      expect(page).to have_css("td##{@pet_app1.id}-reject")
+      expect(page).to have_css("td##{@pet_app2.id}-reject")
+    end
+    #application must be approved, not just the pet_app
   end
 
 end
