@@ -1,6 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe 'the admin shelter show' do
+  before(:each) do
+    @shelter1 = Shelter.create!(name:'Detroit Human People', city:'Detroit', foster_program:true, rank: 6)
+    @shelter2 = Shelter.create!(name:'Another Shelter', city:'Las Angeles', foster_program:true, rank: 7)
+    @shelter3 = Shelter.create!(name:'a shelter', city:'Denver', foster_program:false, rank: 3)
+    @shelter6 = Shelter.create!(name:'San Antonio Humane Society', city:'Marquette', foster_program:true, rank: 1)
+    @shelter7 = Shelter.create!(name:'Marquette Humane Society', city:'San Antonio', foster_program:true, rank: 2)
+
+    @pet1 = Pet.create(name:'Muffin',adoptable:true,breed:'fluffy cat',age:5, shelter_id: @shelter6.id, pic:'20210429_144443.jpg')
+    @pet2 = Pet.create(name:'Tesla',adoptable:true,breed:'hunter cat',age:4, shelter_id: @shelter7.id, pic:'tesla.jpg')
+    @pet3 = Pet.create(name:'Cosmos',adoptable:true,breed:'playful cat',age:4, shelter_id: @shelter7.id, pic:'20210429_144443.jpg')
+
+    @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
+
+    @pet_app1 = @app.pet_apps.create!(pet_id: @pet2.id)
+    @pet_app2 = @app.pet_apps.create!(pet_id: @pet1.id)
+    @pet_app3 = PetApp.create(pet_id: @pet1.id, app_id: @app.id)
+    @pet_app4 = PetApp.create(pet_id: @pet3.id, app_id: @app.id)
+    @pet_app5 = PetApp.create(pet_id: @pet2.id, app_id: @app.id)
+  end
 
   # Story 19
   # SQL Only Story
@@ -8,8 +27,10 @@ RSpec.describe 'the admin shelter show' do
   # As a visitor
   # When I visit an admin shelter show page
   # Then I see that shelter's name and full address
-  xit 'lists the shelters name and address' do 
-
+  it 'lists the shelters name and address' do 
+    visit "/admin/shelters/#{@shelter1.id}"
+    expect(page).to have_content(@shelter1.name)
+    expect(page).to have_content(@shelter1.city)
   end
 
     # Story 22

@@ -38,4 +38,13 @@ class Shelter < ApplicationRecord
     .order(name: :asc)
     .distinct
   end
+
+  def self.sql_query(id)
+    find_by_sql(
+      "SELECT city, name, id 
+      FROM shelters 
+      WHERE shelters.id = #{id}
+      LIMIT 1
+      ").first
+  end
 end

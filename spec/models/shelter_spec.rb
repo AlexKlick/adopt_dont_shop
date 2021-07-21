@@ -52,6 +52,15 @@ RSpec.describe Shelter, type: :model do
         expect(Shelter.pending_apps).to_not include(@shelter_2)
       end
     end
+
+    describe '#sql_query' do
+      it 'returns a shelters city, id, and name, using sql' do
+        Shelter.sql_query(@shelter_1.id)
+        expect(Shelter.sql_query(@shelter_1.id).name).to eq(@shelter_1.name)
+        expect(Shelter.sql_query(@shelter_1.id).id).to eq(@shelter_1.id)
+        expect(Shelter.sql_query(@shelter_1.id).city).to eq(@shelter_1.city)
+      end
+    end
   end
 
   describe 'instance methods' do
