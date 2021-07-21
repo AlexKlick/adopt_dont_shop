@@ -25,9 +25,9 @@
           <table class="table table-bordered table-hover align-middle text-center">
             <tbody>
               <% @app.pet_apps.each do |pet_app| %>
-                <% if pet_app.status == "pending" %>
                 <tr>
                   <td><%=pet_app.pet.name %></td>
+                <% if pet_app.status == "pending" && pet_app.pet.adoptable != false %>
                   <td id ="<%=pet_app.id%>-approve">
                     <%= bootstrap_form_tag url: "/admin/pet_apps/#{pet_app.id}", method: :patch do |form| %>
                       <%= form.hidden_field :status, value: 'approved' %>
@@ -40,14 +40,20 @@
                       <%= form.submit 'Reject', :class => "btn btn-danger fs-5", :style => "width: 100px;"  %>
                     <% end %>
                   </td>
-                </tr>
+
+                <% elsif pet_app.pet.adoptable == false %>
+                  <td id ="<%=pet_app.id%>-approve">Pet already approved for another adoption!?!?</td>
+                  <td id ="<%=pet_app.id%>-reject">                    
+                    <%= bootstrap_form_tag url: "/admin/pet_apps/#{pet_app.id}", method: :patch do |form| %>
+                      <%= form.hidden_field :status, value: 'rejected' %>
+                      <%= form.submit 'Reject', :class => "btn btn-danger fs-5", :style => "width: 100px;"  %>
+                    <% end %>
+                  </td>
                 <% else %>
-                  <tr>
-                    <td><%=pet_app.pet.name %></td>
                     <td id ="<%=pet_app.id%>-status">Status: <%=pet_app.status %></td>
-                  </tr>
                 <% end %>
               <%end%>
+            </tr>
             </tbody>
           </table>
           <p class="card-text float:left" style="color: rgb(92, 95, 88); min-width: 100px">

@@ -186,7 +186,7 @@ RSpec.describe 'the admin apps show page' do
   # And instead I see a message that this pet has been approved for adoption
   # And I do see a button to reject them
 
-  xit 'pet has both approved and pending app, on pending app show - pet has no approval button, but message adopted and reject button' do
+  it 'pet has both approved and pending app, on pending app show - pet has no approval button, but message adopted and reject button' do
     within(".table") do
       within("##{@pet_app2.id}-approve") do
         click_on('Approve')
@@ -197,14 +197,15 @@ RSpec.describe 'the admin apps show page' do
     end
     visit "/admin/apps/#{@app2.id}"
     within(".table") do
-      within("##{@pet_app2.id}-approve") do
+      within("##{@pet_app3.id}-approve") do
         expect(page).to have_content("Pet already approved for another adoption!?!?")
       end
-      within("##{@pet_app1.id}-approve") do
+      within("##{@pet_app4.id}-approve") do
         expect(page).to have_content("Pet already approved for another adoption!?!?")
       end
-      expect(page).to have_css("td##{@pet_app1.id}-reject")
-      expect(page).to have_css("td##{@pet_app2.id}-reject")
+      expect(page).to have_css("td##{@pet_app3.id}-reject")
+      expect(page).to have_css("td##{@pet_app4.id}-reject")
+      expect(page).to have_css("td##{@pet_app5.id}-reject")
     end
     #application must be approved, not just the pet_app
   end
