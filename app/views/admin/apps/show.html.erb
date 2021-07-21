@@ -2,7 +2,7 @@
   <div class="card " style="background-color: rgb(191, 202, 209);min-width: 480px">
     <div class="card-header" style="background-color: rgb(59, 87, 105)">
       <h4 style="padding-top: 8px; color: rgb(191, 202, 209);" class="card-title"><%=@app.name%></h4>
-      <h6 id="status" style="font-style:italic ;<%= @app.status == 'approved' ? 'color:green' : 'color: rgb(230,230,0)' %>">Status: <%= @app.status%></h6>
+      <h6 id="app-status" style="font-style:italic ;<%= @app.status == 'approved' ? 'color:green' : 'color: rgb(230,230,0)' %>">Status: <%= @app.status%></h6>
       <hr
         class="float-left"
         style="

@@ -119,8 +119,18 @@ RSpec.describe 'the admin apps show page' do
   # Then I am taken back to the admin application show page
   # And I see the application's status has changed to "Approved"
 
-  xit 'when all pets are approved on an app, the app status is changed to approved' do
-    
+  it 'when all pets are approved on an app, the app status is changed to approved' do
+    within(".table") do
+      within("##{@pet_app2.id}-approve") do
+        click_on('Approve')
+      end
+      within("##{@pet_app1.id}-approve") do
+        click_on('Approve')
+      end
+    end
+    within("#app-status") do
+      expect(page).to have_content("Status: Approved")
+    end
   end
 
   # Story 16
