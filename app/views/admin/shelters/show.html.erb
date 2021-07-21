@@ -3,12 +3,14 @@
 
 <p class="pet-count">Pets at <%= @shelter.name %>: <%= @shelter.pet_count %></p>
 <div id="statistics">
-  <p id="average_age"><%= @pet_average_age %></p>
+  <p id="average_age">Average Pet Age: <%= @pet_average_age %></p>
+  <p id="pets_adoptable_count"> <%=@shelter.pets_adoptable_count%> Pets Available</p>
 </div>
 <p>
   <%= link_to "All pets at #{@shelter.name}", "/shelters/#{@shelter.id}/pets" %>
 </p>
 
 <p>
-  <%= link_to "Delete #{@shelter.name}", "/shelters/#{@shelter.id}", method: :delete %>
+  <%= link_to "Delete #{@shelter.name}", "/shelters/#{@shelter.id}", method:
+  :delete %>
 </p>

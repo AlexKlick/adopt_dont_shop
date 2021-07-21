@@ -92,5 +92,10 @@ RSpec.describe Shelter, type: :model do
         expect(@shelter_1.pet_average_age).to eq(4)
       end
     end
+    describe '.pets_adoptable_count' do
+      it 'returns the number of pets currently available from this shelter' do
+        expect(@shelter_1.pets_adoptable_count).to eq(2)
+      end
+    end
   end
 end
