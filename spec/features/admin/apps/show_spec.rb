@@ -143,7 +143,7 @@ RSpec.describe 'the admin apps show page' do
   # Then I am taken back to the admin application show page
   # And I see the application's status has changed to "Rejected"
 
-  xit 'if one pet is rejected, and then other pets approved, it shows rejected for entire app' do
+  it 'if one pet is rejected, and then other pets approved, it shows rejected for entire app' do
     within(".table") do
       within("##{@pet_app2.id}-reject") do
         click_on('Reject')

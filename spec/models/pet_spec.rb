@@ -42,7 +42,6 @@ RSpec.describe Pet, type: :model do
       it 'updates the attribute adoptable for all pets on app, given app_id and boolean value for changing adoptability' do
         expect(Pet.pluck(:adoptable)).to eq([true, true, false])
         Pet.update_adoptability(@app.id, false)
-        binding.pry
         expect(Pet.pluck(:adoptable)).to eq([false, false, false])
       end
     end

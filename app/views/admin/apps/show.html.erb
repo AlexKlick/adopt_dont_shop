@@ -41,7 +41,7 @@
                     <% end %>
                   </td>
 
-                <% elsif pet_app.pet.adoptable == false %>
+                <% elsif pet_app.pet.adoptable == false && pet_app.status == "pending"%>
                   <td id ="<%=pet_app.id%>-approve">Pet already approved for another adoption!?!?</td>
                   <td id ="<%=pet_app.id%>-reject">                    
                     <%= bootstrap_form_tag url: "/admin/pet_apps/#{pet_app.id}", method: :patch do |form| %>

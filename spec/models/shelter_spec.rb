@@ -42,14 +42,14 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
-    describe '#pending' do
+    describe '#pending_apps' do
       it 'returns shelters with pending pet applications' do
         app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
         pet_app1 = app.pet_apps.create!(pet_id: @pet_3.id)
         pet_app2 = app.pet_apps.create!(pet_id: @pet_1.id)
-        expect(Shelter.pending).to include(@shelter_3)
-        expect(Shelter.pending).to include(@shelter_1)
-        expect(Shelter.pending).to_not include(@shelter_2)
+        expect(Shelter.pending_apps).to include(@shelter_3)
+        expect(Shelter.pending_apps).to include(@shelter_1)
+        expect(Shelter.pending_apps).to_not include(@shelter_2)
       end
     end
   end
