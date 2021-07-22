@@ -66,10 +66,4 @@ class Shelter < ApplicationRecord
     .where('apps.status = ?', 2)
     .count
   end
-
-  def pending_pets
-    pets
-    .joins(:pet_apps)
-    .where('pet_apps.status = 0')
-  end
 end

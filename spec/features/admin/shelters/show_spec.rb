@@ -11,11 +11,13 @@ RSpec.describe 'the admin shelter show' do
 
     @app = App.create(name: 'Scooby', street: "123", city:"fake", state: "fake", zip: 48248)
     @app2 = App.create(name: 'Doo', street: "456", city:"more-fake", state: "denial", zip: 80204)
+    @app3 = App.create(name: 'Dooby Doo', street: "456", city:"more-fake", state: "denial", zip: 80204)
 
     @pet_app1 = @app.pet_apps.create!(pet_id: @pet2.id)
     @pet_app2 = @app.pet_apps.create!(pet_id: @pet1.id)
     @pet_app4 = PetApp.create(pet_id: @pet3.id, app_id: @app.id)
     @pet_app6 = @app2.pet_apps.create!(pet_id: @pet2.id)
+    @pet_app7 = @app3.pet_apps.create!(pet_id: @pet2.id)
 
     #approve all 
     visit "/admin/apps/#{@app2.id}"
@@ -83,7 +85,7 @@ RSpec.describe 'the admin shelter show' do
     within("#action_required") do
       expect(page).to have_content(@pet1.name)
       expect(page).to have_content(@pet3.name)
-      expect(page).to have_content(@pet2.name)
+      expect(page).to have_content(@pet2.name, count: 2)
       expect(page).to_not have_content(@pet4.name)
     end
   end
@@ -98,8 +100,9 @@ RSpec.describe 'the admin shelter show' do
     within("#action_required") do
       expect(page).to have_link(@pet1.name)
       expect(page).to have_link(@pet3.name)
-      expect(page).to have_link(@pet2.name)
+      expect(page).to have_link(@pet2.name, count: 2)
       expect(page).to_not have_link(@pet4.name)
+
       click_on(@pet1.name)
     end
     expect(current_path).to eq("/admin/apps/#{@app.id}")

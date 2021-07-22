@@ -13,9 +13,10 @@ RSpec.describe PetApp do
   end
 
   describe 'class methods' do
-
-  end
-  describe 'instance methods' do
-
+    describe '#pending_pets' do
+      xit 'returns the pet apps/ pets from a shelter which are pending approval' do
+        
+      end
+    end
   end
 end

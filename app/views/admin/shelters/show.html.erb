@@ -17,6 +17,6 @@
 </p>
 <div id="action_required">
   <% @pending_pets.each do |pet| %>
-    <%=link_to "#{pet.name}", "/" %>
+    <%=link_to "#{pet.name}", "/admin/apps/#{pet.app_id}" %>
   <% end %>
 </div>
